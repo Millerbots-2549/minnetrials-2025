@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.AimTagCommand;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
@@ -21,10 +22,13 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
+  private final AimTagCommand aimCommand = new AimTagCommand(driveSubsystem);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final XboxController m_driverController =
       new XboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController m_OperatorController =
+      new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -44,6 +48,9 @@ public class RobotContainer {
   private void configureBindings() {
     driveSubsystem.setDefaultCommand(DriveCommands.joystickDrive(
       driveSubsystem, () -> m_driverController.getLeftY(), () -> m_driverController.getRightX()));
+
+    new Trigger(() -> m_driverController.getLeftTriggerAxis() > 0.5).whileTrue(aimCommand);
+    
   }
 
   /**
