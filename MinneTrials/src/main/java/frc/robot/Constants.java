@@ -28,12 +28,19 @@ public final class Constants {
   }
 
   public static class VisionConstants {
-    public static final double kP = 0.1;
-    public static final double kI = 0.0;
-    public static final double kD = 0.0;
+    public static final double anglekP = 0.1;
+    public static final double anglekI = 0.0;
+    public static final double anglekD = 0.0;
     public static final double kToleranceDegrees = 1.0;
 
+    public static final double distancekP = 0.1;
+    public static final double distancekI = 0.0;
+    public static final double distancekD = 0.0;
+    public static final double kToleranceMeters = 0.1;
+
     public static final double TARGET_YAW = 0.0;
+    public static final double TARGET_DISTANCE = 0.0;
+    public static final String LimelightName = "Main";
 
   }
 }
