@@ -5,16 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.config.RobotConfig;
-import com.pathplanner.lib.controllers.PPLTVController;
 
-import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -34,33 +25,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     private final DifferentialDrive drive = new DifferentialDrive(leftMotors, rightMotors);
 
-    private final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(DriveConstants.TRACK_WIDTH);
-    private final DifferentialDrivePoseEstimator odometry = new DifferentialDrivePoseEstimator(kinematics, null, 0, 0, null);
-
     public DriveSubsystem() {
-        RobotConfig config = null;
-        try {
-            config = RobotConfig.fromGUISettings();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        AutoBuilder.configure(
-            this::getPose,
-            this::resetPose,
-            this::getSpeeds,
-            (speeds, feedforwards) -> drive(speeds),
-            new PPLTVController(0.02),
-            config,
-            () -> {
-                var alliance = DriverStation.getAlliance();
-                if (alliance.isPresent()) {
-                    return alliance.get() == DriverStation.Alliance.Red;
-                }
-                return false;
-            },
-            this
-        ); 
+        
     }
 
     /**
@@ -79,25 +45,5 @@ public class DriveSubsystem extends SubsystemBase {
      */
     public void tankDrive(double left, double right) {
         drive.tankDrive(left, right);
-    }
-
-    public void drive(ChassisSpeeds speeds) {
-        DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speeds);
-        wheelSpeeds.desaturate(0.5);
-
-        drive.tankDrive(wheelSpeeds.leftMetersPerSecond, wheelSpeeds.rightMetersPerSecond);
-    }
-
-    public Pose2d getPose() {
-        return odometry.getEstimatedPosition();
-    }
-
-    public void resetPose(Pose2d pose) {
-        odometry.resetPose(pose);
-    }
-
-    @SuppressWarnings("removal")
-    public ChassisSpeeds getSpeeds() {
-        return kinematics.toChassisSpeeds(new DifferentialDriveWheelSpeeds(leftMotors.get(), rightMotors.get()));
-    }
+    } 
 }
