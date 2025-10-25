@@ -47,10 +47,9 @@ public class RobotContainer {
    */
   private void configureBindings() {
     driveSubsystem.setDefaultCommand(DriveCommands.joystickDrive(
-      driveSubsystem, () -> m_driverController.getLeftY(), () -> m_driverController.getRightX()));
+      driveSubsystem, () -> m_driverController.getRightX(), () -> m_driverController.getLeftY()));
 
-    new Trigger(() -> m_driverController.getLeftTriggerAxis() > 0.5).whileTrue(aimCommand);
-    
+    m_OperatorController.a().whileTrue(aimCommand);
   }
 
   /**

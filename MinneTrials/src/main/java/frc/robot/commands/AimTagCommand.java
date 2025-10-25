@@ -45,12 +45,14 @@ public class AimTagCommand extends Command {
         
 
         // Rotate robot to aim at target
-        drive.arcadeDrive(distanceoutput, -angleoutput);
+        System.out.println(LimelightHelpers.getTX(VisionConstants.LimelightName));
+        drive.arcadeDrive(angleoutput, 0);
     }
 
     @Override
     public void end(boolean interrupted) {
         drive.arcadeDrive(0, 0);
+        
     }
 
     @Override
