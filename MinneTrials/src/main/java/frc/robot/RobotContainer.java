@@ -8,9 +8,11 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AimTagCommand;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -49,7 +51,10 @@ public class RobotContainer {
     driveSubsystem.setDefaultCommand(DriveCommands.joystickDrive(
       driveSubsystem, () -> m_driverController.getRightX(), () -> m_driverController.getLeftY()));
 
-    m_OperatorController.a().whileTrue(aimCommand);
+    m_driverController.a().whileTrue(aimCommand);
+
+
+    m_OperatorController.b().whileTrue(new RunCommand(() -> ShooterSubsystem.runSpeed(67)));
   }
 
   /**
