@@ -36,6 +36,7 @@ public class DriveSubsystem extends SubsystemBase {
      */
     public void arcadeDrive(double forward, double turn) {
         drive.arcadeDrive(forward, turn);
+        //System.out.println("Left: " + forward + " Right: " + turn);
     }
 
     /**
@@ -45,5 +46,6 @@ public class DriveSubsystem extends SubsystemBase {
      */
     public void tankDrive(double left, double right) {
         drive.tankDrive(left, right);
+        
     } 
 }
