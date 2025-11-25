@@ -25,10 +25,11 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final AimTagCommand aimCommand = new AimTagCommand(driveSubsystem);
+  private final ShooterSubsystem ShooterSubsystem = new ShooterSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final XboxController m_driverController =
-      new XboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController m_driverController =
+      new CommandXboxController(OperatorConstants.kDriverControllerPort);
   private final CommandXboxController m_OperatorController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
