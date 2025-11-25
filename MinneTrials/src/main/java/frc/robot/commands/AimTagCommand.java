@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -32,21 +33,32 @@ public class AimTagCommand extends Command {
             } else if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
                 LimelightHelpers.SetFiducialIDFiltersOverride(VisionConstants.LimelightName, new int[]{4, 5});
             }
-        }
+        } 
     }
 
     @Override
     public void execute() {
         double tx = LimelightHelpers.getTX(VisionConstants.LimelightName);
         double angleoutput = anglepid.calculate(tx, VisionConstants.TARGET_YAW);
+        double ff = 0.15;
+        if (angleoutput > 0.08) {
+            angleoutput+=ff;
+        } else if (angleoutput < -0.08) {
+            angleoutput-=ff;
+        }
+        
 
         double ty = LimelightHelpers.getTY(VisionConstants.LimelightName);
         double distanceoutput = distancepid.calculate(ty, VisionConstants.TARGET_DISTANCE);
+        if (distanceoutput > 0.08) {
+            distanceoutput+=ff;
+        } else if (distanceoutput < -0.08) {
+            distanceoutput-=ff;
+        }
         
 
         // Rotate robot to aim at target
-        System.out.println(LimelightHelpers.getTX(VisionConstants.LimelightName));
-        drive.arcadeDrive(angleoutput, 0);
+        drive.arcadeDrive(MathUtil.clamp(angleoutput, -0.5, 0.5), MathUtil.clamp(-distanceoutput, -0.5, 0.5));
     }
 
     @Override
@@ -57,6 +69,6 @@ public class AimTagCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return anglepid.atSetpoint();
+        return false;
     }
 }
