@@ -9,12 +9,13 @@ import frc.robot.commands.AimTagCommand;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ButterSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -25,13 +26,15 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final AimTagCommand aimCommand = new AimTagCommand(driveSubsystem);
-  private final ShooterSubsystem ShooterSubsystem = new ShooterSubsystem();
+  private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+  private final IntakeSubsystem intalke = new IntakeSubsystem();
+  private final ButterSubsystem butter = new ButterSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
-  private final CommandXboxController m_OperatorController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController m_operatorController =
+      new CommandXboxController(OperatorConstants.kOperatorControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -51,11 +54,19 @@ public class RobotContainer {
   private void configureBindings() {
     driveSubsystem.setDefaultCommand(DriveCommands.joystickDrive(
       driveSubsystem, () -> m_driverController.getRightX(), () -> m_driverController.getLeftY()));
+    
+    shooterSubsystem.setDefaultCommand(new RunCommand(() -> shooterSubsystem.runSpeed(0), shooterSubsystem));
+    butter.setDefaultCommand(new RunCommand(() -> butter.runSpeed(0), butter));
+    intalke.setDefaultCommand(new RunCommand(() -> intalke.runSpeed(0), intalke));
 
     m_driverController.a().whileTrue(aimCommand);
 
 
-    m_OperatorController.b().whileTrue(new RunCommand(() -> ShooterSubsystem.runSpeed(67)));
+    m_operatorController.leftTrigger().whileTrue(new RunCommand(() -> shooterSubsystem.runSpeed(67)));
+    m_operatorController.leftBumper().whileTrue(new RunCommand(() -> intalke.runSpeed(-67)));
+    m_operatorController.rightBumper().whileTrue(new RunCommand(() -> shooterSubsystem.runSpeed(-67)));
+    m_operatorController.a().whileTrue(new RunCommand(() -> butter.runSpeed(67)));
+    m_operatorController.b().whileTrue(new RunCommand(() -> butter.runSpeed(-67)));
   }
 
   /**

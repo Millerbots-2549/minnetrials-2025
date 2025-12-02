@@ -45,10 +45,5 @@ public final class Constants {
 
   }
 
-  public static class ButterConstants {
-    public static final int butterMotorID = 5;
-    public static final double butterKP = 0.1;
-    public static final double butterKI = 0.0;
-    public static final double butterKD = 0.0;
-  }
+
 }
