@@ -10,16 +10,16 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ButterSubsystem extends SubsystemBase {
-    private final SparkMax frontLeftMotor = new SparkMax(294, MotorType.kBrushless);
-    private final SparkMax frontRightMotor = new SparkMax(2, MotorType.kBrushless);
+    private final SparkMax top = new SparkMax(8, MotorType.kBrushless);
+    private final SparkMax bottom = new SparkMax(21, MotorType.kBrushless);
 
   /** Creates a new ButterSubsystem. */
   public ButterSubsystem() {
   }
 
   public void runSpeed(double speed) {
-      frontLeftMotor.set(speed);
-      frontRightMotor.set(speed);
+      top.set(-speed);
+      bottom.set(speed);
   }
   
 

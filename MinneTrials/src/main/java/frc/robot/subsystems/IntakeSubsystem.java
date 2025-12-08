@@ -9,7 +9,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeSubsystem extends SubsystemBase {
-  public TalonFX shooterMotor = new TalonFX(12);
+  public TalonFX shooterMotor = new TalonFX(7);
 
   public IntakeSubsystem() {}
   
