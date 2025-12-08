@@ -75,6 +75,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return Commands.none();
+    return Autos.ShooterAndIntakeTypeShii(driveSubsystem, shooterSubsystem, intalke);
   }
 }
